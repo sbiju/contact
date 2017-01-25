@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<br/><br/><br/>
+
+<div class="row">
+<div class="col-sm-12">
+    <h3>CONTACT LIST</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>PHONE</th>
+                    <th>EMAIL</th>
+                    <th>HOUSE NO/NAME</th>
+                    <th>STREET</th>
+                    <th>CITY</th>
+                    <th>STATE</th>
+                </tr>
+            </thead>
+       {% for item in object_list %}
+            <tr>
+                 <td>
+                  {{ item.first_name }} {{ item.last_name }}
+                </td>
+                 <td>
+                  {{ item.phone }}
+                </td>
+                 <td>
+                  {{ item.email }}
+                </td>
+                     <td>
+                  {{ item.house }}
+                </td>
+                     <td>
+                  {{ item.street }}
+                </td>
+                     <td>
+                  {{ item.city }}
+                </td>
+                <td>
+                  {{ item.state }}
+                </td>
+            </tr>
+       {% endfor %}
+        </table>
+    </div>
+
+</div>
+    <a href="{% url 'contact_create' %}" class="btn btn-primary">Add New</a>
+</div>
+{% endblock %}
