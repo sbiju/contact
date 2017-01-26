@@ -12,3 +12,6 @@ background-image: linear-gradient(to bottom,#365790 0,#919fce 100%);
     max-width: 125%;
     height: auto;
 }
+.thumbnail{
+    margin-left: 20px;
+}

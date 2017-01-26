@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 
 def upload_location(instance, filename):
@@ -40,3 +41,6 @@ class Contact(models.Model):
 
     def __str__(self):
         return str(self.first_name)
+
+    def get_absolute_url(self):
+        return reverse('contact_detail', kwargs={'pk': self.pk})
