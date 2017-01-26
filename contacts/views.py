@@ -21,6 +21,17 @@ class ContactCreate(CreateView):
     success_url = reverse_lazy('contact_list')
 
 
+class ContactUpdate(UpdateView):
+    model = Contact
+    fields = ['first_name', 'last_name', 'phone', 'email', 'house', 'street', 'city', 'state', 'photo']
+    success_url = reverse_lazy('contact_list')
+
+
 class ContactDetail(DetailView):
     model = Contact
     queryset = Contact.objects.all()
+
+
+class ContactDelete(DeleteView):
+    model = Contact
+    success_url = reverse_lazy('contact_list')

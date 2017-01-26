@@ -26,6 +26,8 @@
                     <th>STREET</th>
                     <th>CITY</th>
                     <th>STATE</th>
+                    <th>Update?</th>
+                    <th>Delete?</th>
                 </tr>
             </thead>
             <tr>
@@ -49,6 +51,16 @@
                 </td>
                 <td>
                   {{ object.state }}
+                </td>
+                <td>
+                <a href="{% url 'contact_edit' object.pk %}" class="btn btn-info">
+                    <span class="glyphicon glyphicon-off" area-hidden="true"></span>
+                </a>
+                </td>
+                <td>
+                <a href="{% url 'contact_delete' object.pk %}" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-off" area-hidden="true"></span>
+                </a>
                 </td>
             </tr>
         </table>
