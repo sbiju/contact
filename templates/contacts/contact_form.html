@@ -3,7 +3,7 @@
 {% block content %}
 <br/><br/><br/>
 <div class="col-sm-9 col-sm-offset-3 col-md-5 col-md-offset-4 main">
-<form action="" method="post">{% csrf_token %}
+<form method="post" enctype="multipart/form-data" action="">{% csrf_token %}
     {{ form|crispy }}
     <input type="submit" class="btn btn-primary" value="Add" />
 </form>

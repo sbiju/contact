@@ -4,7 +4,7 @@
 
 <div class="row">
 <div class="col-sm-12">
-    <h3>CONTACT LIST</h3>
+    <h4 class="text-center">CONTACT LIST</h4><hr/>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -12,16 +12,14 @@
                     <th>NAME</th>
                     <th>PHONE</th>
                     <th>EMAIL</th>
-                    <th>HOUSE NO/NAME</th>
-                    <th>STREET</th>
                     <th>CITY</th>
-                    <th>STATE</th>
+
                 </tr>
             </thead>
        {% for item in object_list %}
             <tr>
                  <td>
-                  {{ item.first_name }} {{ item.last_name }}
+                  {{ forloop.counter }}) <a href="{% url 'contact_detail' item.pk %}">{{ item.first_name }} {{ item.last_name }}</a>
                 </td>
                  <td>
                   {{ item.phone }}
@@ -29,24 +27,34 @@
                  <td>
                   {{ item.email }}
                 </td>
-                     <td>
-                  {{ item.house }}
-                </td>
-                     <td>
-                  {{ item.street }}
-                </td>
-                     <td>
+                <td>
                   {{ item.city }}
                 </td>
-                <td>
-                  {{ item.state }}
-                </td>
+
             </tr>
        {% endfor %}
         </table>
     </div>
+    <hr/>
+    <a href="{% url 'contact_create' %}" class="btn btn-primary">Add New</a>
+    <hr/>
+</div>
 
 </div>
-    <a href="{% url 'contact_create' %}" class="btn btn-primary">Add New</a>
-</div>
+
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/contact?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="/contact?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
 {% endblock %}

@@ -45,11 +45,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.google',
     'contacts',
-
 ]
 
 SITE_ID = 1
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -143,6 +143,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
+
+LOGIN_REDIRECT_URL = 'home'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
 SOCIALACCOUNT_PROVIDERS = \
     {'linkedin':

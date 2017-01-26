@@ -66,9 +66,10 @@
 {% else %}
 <div class="row">
     <div class="col-sm-6">
-    <br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/>
 
-        <h1> <a href="{% url 'contact_list' %}">Manage Contacts</a></h1>
+       <a href="{% url 'contact_list' %}" class="btn btn-primary">Contact List</a><br/><br/>
+       <a href="{% url 'contact_create' %}" class="btn btn-primary">Create New</a>
     </div>
     <div class="col-sm-6">
         <div class="front-image">
