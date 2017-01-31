@@ -9,7 +9,7 @@ background-image: linear-gradient(to bottom,#365790 0,#919fce 100%);
 }
 .img-responsive{
     display: block;
-    max-width: 125%;
+    max-width: 100%;
     height: auto;
 }
 .thumbnail{

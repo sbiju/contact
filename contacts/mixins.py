@@ -18,8 +18,6 @@ class StaffRequiredMixin(object):
             raise Http404
 
 
-
-
 class LoginRequiredMixin(object):
     @classmethod
     def as_view(self, *args, **kwargs):

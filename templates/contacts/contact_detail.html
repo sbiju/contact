@@ -5,49 +5,32 @@
 
 <div class="row">
 <div class="col-sm-12">
-    <h3>{{ object.first_name }} {{ object.last_name }}</h3><a href="{% url 'contact_list' %}" class="btn btn-primary" style="float: right">Contact List</a>
-        {% if object.photo %}
-    <br/>
-        <div class="row">
-            <img id="img" class="img-responsive thumbnail" src="{{ object.photo.url }}"/>
-        </div>
-        {% else %}
-        <div class="row">
-            <img src="{% static 'img/dummy.png' %}" class="img-responsive thumbnail">
-         </div>
-        {% endif %}
+    <h3>{{ object.first_name }} {{ object.last_name }}</h3>
+<br/>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>PHONE</th>
                     <th>EMAIL</th>
-                    <th>HOUSE NO/NAME</th>
-                    <th>STREET</th>
-                    <th>CITY</th>
-                    <th>STATE</th>
+                    <th>JOB TITLE</th>
+                    <th>COMPANY</th>
+                    <th>NOTES</th>
                     <th>Update?</th>
                     <th>Delete?</th>
                 </tr>
             </thead>
             <tr>
                  <td>
-                  {{ object.phone }}
-                </td>
-                 <td>
                   {{ object.email }}
                 </td>
                 <td>
-                  {{ object.house }}
+                  {{ object.job_title }}
                 </td>
-                     <td>
-                  {{ object.street }}
-                </td>
-                     <td>
-                  {{ object.city }}
+                 <td>
+                  {{ object.company }}
                 </td>
                 <td>
-                  {{ object.state }}
+                  {{ object.notes }}
                 </td>
                 <td>
                 <a href="{% url 'contact_edit' object.pk %}" class="btn btn-info">
@@ -62,6 +45,9 @@
             </tr>
         </table>
     </div>
+    <br/><br/>
+        <a href="{% url 'contact_list' %}" class="btn btn-primary" style="float: right">Back to Contact List</a>
+
 </div>
 
 </div>

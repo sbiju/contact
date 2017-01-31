@@ -145,8 +145,16 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 
 LOGIN_REDIRECT_URL = 'home'
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED=True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'snmarriages@gmail.com'
+EMAIL_HOST_PASSWORD = 'arunima888'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 SOCIALACCOUNT_PROVIDERS = \
     {'linkedin':

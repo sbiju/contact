@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<br/><br/><br/>
+
+<div class="row">
+<div class="col-sm-12">
+    <h3>{{ object.first_name }} {{ object.last_name }}</h3>
+<ul>
+    <li>
+        <h3>Title</h3> {{ object.title }}
+    </li><hr/>
+    <h3>Participants</h3>
+    {{ object.participant }}
+      <li><hr/>
+        <h3>Notes</h3>{{ object.notes }}
+    </li><hr/>
+        <li>
+        <h3>Date of Meeting</h3>{{ object.meeting_date }}
+    </li><hr/>
+    <li>
+            <a href="{% url 'meeting_edit' object.pk %}" class="btn btn-info">
+                    <span class="glyphicon glyphicon-off" area-hidden="true"></span>
+                </a>
+    </li>
+    <hr/>
+    <li>
+               <a href="{% url 'meeting_delete' object.pk %}" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-off" area-hidden="true"></span>
+                </a>
+    </li><hr/>
+</ul>
+</div>
+<a href="{% url 'meeting_list' %}" class="btn btn-primary" style="float: right">Back to Interaction List</a><br/><br/>
+
+</div>
+
+{% endblock %}
