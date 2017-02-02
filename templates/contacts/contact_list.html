@@ -31,30 +31,99 @@
        {% endfor %}
         </table>
     </div>
-    <hr/>
-    <a href="{% url 'contact_create' %}" class="btn btn-primary">Add New</a>
 
-
-    <hr/>
 </div>
 
 </div>
 
- <div class="row">
-    <div class="pagination">
-        <span class="step-links">
-            {% if object_list.has_previous %}
-                <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
-            {% endif %}
-            <span class="current">
-                Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
-            </span>
-            {% if object_list.has_next %}
-                <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
-            {% endif %}
-        </span>
-    </div>
- </div>
+<div class="row">
+        <input type="button" id="import-button" value="Import">
+        <div id="container"></div>
 
+<script type="text/javascript">
+    /**
+ * Created by upadhyay on 26/1/17.
+ */
+
+    Contact = {};
+
+    /**
+     * Class to handle Gmail contact import.
+     * @param clientId: Client ID of the app.
+     * @param apiKey: API KEY of the app.
+     * @param importContactBtnId: ID of the html button to be used as import contact
+     *   button.
+     * @param containerId: ID of the div in which contacts will be rendered.
+     * @constructor
+     */
+    Contact.Gmail = function (clientId, apiKey, importContactBtnId, containerId) {
+      this.clientId_ = clientId;
+      this.apiKey_ = apiKey;
+      this.scopes_ = 'https://www.google.com/m8/feeds';
+      this.timeOutSec_ = 3;
+      this.gmailImportBtn_ = $('#' + importContactBtnId);
+      this.container_ = $('#' + containerId);
+      this.setUp();
+    };
+
+    /**
+     * Sets up the actions.
+     */
+    Contact.Gmail.prototype.setUp = function () {
+      $(document).on("click", ".js-google_contacts", function () {
+        gapi.client.setApiKey(this.apiKey_);
+        window.setTimeout(this.checkAuth_, this.timeOutSec_);
+      });
+      this.gmailImportBtn_.one('click', $.proxy(this.checkAuth_, this));
+    };
+
+    /**
+     * Checks the authentication of the user.
+     * @private
+     */
+    Contact.Gmail.prototype.checkAuth_ = function () {
+      gapi.auth.authorize({
+        client_id: this.clientId_,
+        scope: this.scopes_, immediate: false
+      }, $.proxy(this.handleAuthResult_, this));
+    };
+
+    /**
+     * Handles authentication result.
+     * @param authResult: In this case all the contacts of user.
+     * @private
+     */
+    Contact.Gmail.prototype.handleAuthResult_ = function (authResult) {
+      var self = this;
+      if (authResult && !authResult.error) {
+        $.get("https://www.google.com/m8/feeds/contacts/default/full?alt=json&access_token=" + authResult.access_token + "&max-results=999&v=3.0",
+            function (response) {
+              response.feed.entry.forEach($.proxy(self.renderContact_, self));
+            });
+      }
+    };
+
+    /**
+     * Renders individual contact in the container.
+     * @param obj: The contact object from feed.
+     * @param index: Index of the contact.
+     * @private
+     */
+    Contact.Gmail.prototype.renderContact_ = function (obj, index) {
+      if (obj.gd$email) {
+        this.contactWithEmailCount_++;
+        var email = obj.gd$email[0].address;
+        var name = obj.gd$name && obj.gd$name.gd$fullName && obj.gd$name.gd$fullName.$t ? obj.gd$name.gd$fullName.$t : email;
+        var label = $('<p style="display: inline-block; margin: 5px 0 0 10px">').text(name);
+        var cont = $('<div style="width: 50%; float: left; display: inline-block;">').append(label);
+        this.container_.append(cont);
+      };
+    };
+  </script>
+<script type="text/javascript">
+    new Contact.Gmail(
+    '287642602377-de3jsgcvds4lrucgngfj5kb8bu583tqp.apps.googleusercontent.com ', 'uLdXhTxdkcK6YN9WSP2QjH3W ', "import-button", "container");
+</script>
+</div>
 
 {% endblock %}

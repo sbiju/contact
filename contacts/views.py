@@ -7,6 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from .mixins import LoginRequiredMixin
 from .models import Contact, Meeting
+from .forms import MeetForm, ContactForm
 
 
 # class MeetingList(LoginRequiredMixin, ListView):
@@ -21,18 +22,18 @@ from .models import Contact, Meeting
 
 @login_required
 def meeting_list(request):
-    queryset_list = Meeting.objects.all()
-    # paginator = Paginator(queryset_list, 8)
-    # page_request_var = "page"
-    # page = request.GET.get(page_request_var)
-    # try:
-    #     queryset = paginator.page(page)
-    # except PageNotAnInteger:
-    #     # If page is not an integer, deliver first page.
-    #     queryset = paginator.page(1)
-    # except EmptyPage:
-    #     # If page is out of range (e.g. 9999), deliver last page of results.
-    #     queryset = paginator.page(paginator.num_pages)
+    queryset_list = Meeting.objects.filter(user=request.user)
+    paginator = Paginator(queryset_list, 8)
+    page_request_var = "page"
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
 
     context = {
         "object_list": queryset_list,
@@ -53,14 +54,28 @@ class MeetingDetail(LoginRequiredMixin, DetailView):
         return context
 
 
-class MeetingCreate(LoginRequiredMixin, CreateView):
-    model = Meeting
-    fields = ['title', 'participant', 'notes', 'meeting_date']
-    template_name = 'contacts/contact_form.html'
+@login_required
+def meeting_create(request):
+    form = MeetForm(request.POST or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        return HttpResponseRedirect(instance.get_absolute_url())
+    context = {
+        "form": form,
+    }
+    return render(request, "contacts/contact_form.html", context)
 
-    def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        return super(MeetingCreate, self).form_valid(form)
+
+# class MeetingCreate(LoginRequiredMixin, CreateView):
+#     model = Meeting
+#     fields = ['title', 'participant', 'notes', 'meeting_date']
+#     template_name = 'contacts/contact_form.html'
+#
+#     def form_valid(self, form):
+#         form.instance.created_by = self.request.user
+#         return super(MeetingCreate, self).form_valid(form)
 
 
 class MeetingUpdate(LoginRequiredMixin, UpdateView):
@@ -89,7 +104,7 @@ class HomePageView(TemplateView):
 
 
 def contact_list(request):
-    queryset_list = Contact.objects.all()
+    queryset_list = Contact.objects.filter(user=request.user)
     paginator = Paginator(queryset_list, 8)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
@@ -110,13 +125,27 @@ def contact_list(request):
     return render(request, "contacts/contact_list.html", context)
 
 
-class ContactCreate(LoginRequiredMixin, CreateView):
-    model = Contact
-    fields = ['first_name', 'last_name', 'job_title', 'email', 'company', 'notes']
+@login_required
+def contact_create(request):
+    form = ContactForm(request.POST or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        return HttpResponseRedirect(instance.get_absolute_url())
+    context = {
+        "form": form,
+    }
+    return render(request, "contacts/contact_form.html", context)
 
-    def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        return super(ContactCreate, self).form_valid(form)
+
+# class ContactCreate(LoginRequiredMixin, CreateView):
+#     model = Contact
+#     fields = ['first_name', 'last_name', 'job_title', 'email', 'company', 'notes']
+#
+#     def form_valid(self, form):
+#         form.instance.created_by = self.request.user
+#         return super(ContactCreate, self).form_valid(form)
 
 
 class ContactUpdate(LoginRequiredMixin, UpdateView):

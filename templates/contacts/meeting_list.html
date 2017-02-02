@@ -9,8 +9,8 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th>TITLE</th>
                     <th>PARTICIPANTS</th>
-                    <th>NOTES</th>
                     <th>DATE</th>
 
                 </tr>
@@ -18,10 +18,10 @@
        {% for item in object_list %}
             <tr>
                  <td>
-                  {{ forloop.counter }}) <a href="{% url 'meeting_detail' item.pk %}">{{ item.participant }}</a>
+                  {{ forloop.counter }}) <a href="{% url 'meeting_detail' item.pk %}">{{ item.title }}</a>
                 </td>
                  <td>
-                  {{ item.notes }}
+                  {{ item.participant }}
                 </td>
                 <td>
                   {{ item.meeting_date }}
@@ -32,28 +32,9 @@
        {% endfor %}
         </table>
     </div>
-    <hr/>
-    <a href="{% url 'meeting_create' %}" class="btn btn-primary">Add New</a>
 
-
-    <hr/>
 </div>
 
 </div>
 
- <div class="row">
-    <div class="pagination">
-        <span class="step-links">
-            {% if object_list.has_previous %}
-                <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
-            {% endif %}
-            <span class="current">
-                Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
-            </span>
-            {% if object_list.has_next %}
-                <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
-            {% endif %}
-        </span>
-    </div>
- </div>
 {% endblock %}
